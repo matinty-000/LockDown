@@ -1,0 +1,123 @@
+# ============================================================================
+# LockDown — main configuration
+# ----------------------------------------------------------------------------
+# Master toggles and wiring.
+# ============================================================================
+
+# Global kill-switch. When false, LockDown intercepts nothing.
+enabled: true
+
+# Verbose console logging for debugging.
+debug: false
+
+# ---------------------------------------------------------------------------
+# Discord webhook. Leave webhook blank to disable Discord delivery.
+# The webhook receives alerts and confirmation codes for the guardian group.
+# ---------------------------------------------------------------------------
+discord:
+  webhook: ""
+  username: "LockDown"        # display name on the posted message
+  avatar_url: ""
+
+# ---------------------------------------------------------------------------
+# SMTP email delivery. Leave host blank to disable email.
+# Used to send alerts and codes to the guardian group out-of-game.
+# ---------------------------------------------------------------------------
+smtp:
+  host: ""
+  port: 587
+  username: ""
+  password: ""
+  # "none" | "starttls" | "ssl"
+  encryption: "starttls"
+  from: "lockdown@example.com"
+  from_name: "LockDown"
+
+# ---------------------------------------------------------------------------
+# Guardian group — who receives alerts and confirmation codes.
+# A code is always sent to ALL of these, never to the executor.
+# ---------------------------------------------------------------------------
+guardians:
+  emails: []
+
+# ---------------------------------------------------------------------------
+# Confirmation codes (used by require_confirmation and /lockdown lock|unlock).
+# ---------------------------------------------------------------------------
+confirmation:
+  code_length: 6            # digits
+  timeout_seconds: 60       # how long a code is valid
+  max_attempts: 3           # wrong entries before on_failure fires
+  alphabet: digits          # "digits" or "alphanumeric"
+
+# ---------------------------------------------------------------------------
+# Global command-lockdown behaviour.
+#
+# This is completely independent from rules.yml. When /lockdown lock is active,
+# the mode below decides command access before normal command rules are checked.
+#
+# mode:
+#   all       - block EVERY player/server command. `commands` is ignored.
+#   blocklist - only block commands matching `commands`. Everything else stays open.
+#   allowlist - block everything EXCEPT commands matching `commands`.
+#
+# A plain entry matches that command and all of its arguments. For example,
+# "op" matches both /op and /op Player. Wildcards are also supported:
+#   *  = exactly one argument
+#   ** = one or more arguments
+#
+# Examples:
+#   mode: blocklist
+#   commands:
+#     - "op"
+#     - "deop"
+#     - "lp"
+#
+#   mode: allowlist
+#   commands:
+#     - "lockdown unlock"
+#     - "lockdown confirm"
+#     - "lockdown resend"
+#     - "lockdown auth"
+#
+# In `all` mode, players cannot even use /lockdown unlock. Keep console_bypass
+# enabled if you want the server console to always be able to recover the server.
+# ---------------------------------------------------------------------------
+lockdown:
+  # Optional names/UUIDs kept for administrative ownership/reference. They do
+  # NOT bypass a global command lockdown.
+  unlockers: []
+
+  mode: all
+
+  # Used only by blocklist/allowlist modes.
+  commands: []
+
+  # Console recovery switch. This applies only to the real server console, not
+  # players, command blocks, RCON-like senders, or users with lockdown.bypass.
+  console_bypass: true
+
+  # When false (recommended), lockdown.bypass only bypasses normal rules and
+  # does NOT bypass an active global lockdown. Set true only if you deliberately
+  # want permission holders to ignore the global lockdown.
+  bypass_permission: false
+
+  # Whether engaging/releasing a lockdown requires a confirmation code.
+  require_code: true
+
+# ---------------------------------------------------------------------------
+# Scan behaviour (per-plugin command files under commands/).
+# ---------------------------------------------------------------------------
+scan:
+  # If true, /lockdown scan will never overwrite a customised entry; it will
+  # only add new commands and refresh the auto header. Override with --force.
+  safe_merge: true
+  # Ownerless commands (vanilla, etc.) are grouped under this file name.
+  default_plugin_file: "Minecraft"
+
+# ---------------------------------------------------------------------------
+# Audit log.
+# ---------------------------------------------------------------------------
+audit:
+  file: "logs/lockdown.log"
+  # Keep this many recent entries in memory for the in-game GUI.
+  buffer_size: 256

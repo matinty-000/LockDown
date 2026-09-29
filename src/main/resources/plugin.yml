@@ -1,0 +1,39 @@
+# ============================================================================
+# LockDown — plugin metadata
+# ============================================================================
+name: LockDown
+version: '${version}'
+main: ir.synix.lockdown.LockDownPlugin
+api-version: '1.21'
+
+authors: [matinty]
+website: https://synix.ir/
+
+description: "Command-level security: intercept, log, alert, confirm-code, block and lock."
+
+commands:
+  lockdown:
+    description: LockDown admin control (reload, scan, gui, lock, unlock, confirm, status).
+    usage: |
+      /lockdown reload
+      /lockdown scan [--force]
+      /lockdown gui
+      /lockdown rules
+      /lockdown lock
+      /lockdown unlock
+      /lockdown confirm <code>
+      /lockdown resend
+      /lockdown auth <setup|verify|disable>
+      /lockdown status
+    aliases: [ld, lockd]
+
+permissions:
+  lockdown.admin:
+    description: Access to /lockdown admin subcommands.
+    default: op
+  lockdown.confirm:
+    description: Allows running /lockdown confirm (used by frozen/locked players). Given to everyone by default.
+    default: true
+  lockdown.bypass:
+    description: Bypass normal command rules. Global lockdown bypass is controlled by config.yml.
+    default: op

@@ -1,0 +1,169 @@
+# ============================================================================
+# LockDown — messages (Hex Light Blue Edition)
+# ----------------------------------------------------------------------------
+# Every player-facing string. Supports legacy codes and Hex codes (&#FFFFFF).
+# Primary Color: &#89CFF0 (Baby Blue)
+# Accent Color:  &#4682B4 (Steel Blue)
+#
+# CONFIGURATION TIPS:
+# If you are matching dynamic sub-commands using the Wildcard Engine (* and **),
+# %command% will automatically output the full command typed by the user,
+# including all replaced wildcard parameters.
+# ============================================================================
+
+prefix: "&8[&#89CFF0LockDown&8] &r"
+
+# Generic
+no_permission: "{prefix}&#89CFF0You do not have permission."
+player_only: "{prefix}&#89CFF0This command can only be run by a player."
+unknown_subcommand: "{prefix}&#89CFF0Unknown subcommand. &7/lockdown help"
+reloaded: "{prefix}&#89CFF0Config reloaded."
+disabled_globally: "{prefix}&#89CFF0LockDown is currently disabled in config.yml."
+
+# --- Scan ---------------------------------------------------------------
+scan_started: "{prefix}&7Scanning server commands..."
+scan_done: "{prefix}&#89CFF0Scan complete. &7Wrote &f%count% &7command(s) across &f%files% &7file(s) in commands/."
+scan_force_notice: "{prefix}&#4682B4--force used: existing command files were regenerated from scratch."
+
+# --- Freeze (per-player login page) -------------------------------------
+freeze_title: "&#89CFF0&lLOCKED"
+freeze_subtitle: "&7Awaiting confirmation code"
+freeze_chat_blocked: "{prefix}&#89CFF0You are frozen and cannot chat or act. Enter your code: &#4682B4/lockdown confirm <code>"
+freeze_message: "{prefix}&#89CFF0Your action requires confirmation. A code has been sent to the guardians."
+freeze_already: "{prefix}&#89CFF0You are already awaiting confirmation."
+freeze_applied_failure: "{prefix}&#4682B4Confirmation failed. You have been frozen. Contact a guardian."
+
+# --- Confirmation flow --------------------------------------------------
+confirm_prompt: "{prefix}&#89CFF0A code has been sent to the guardians. Run &#4682B4/lockdown confirm <code>&#89CFF0 within &f%time%&#89CFF0."
+confirm_waiting: "{prefix}&7You have a pending confirmation. Enter the code with &f/lockdown confirm <code>&7."
+confirm_none_pending: "{prefix}&#89CFF0You have no pending confirmation."
+confirm_wrong: "{prefix}&#89CFF0Wrong code. Attempts left: &f%attempts%"
+confirm_success: "{prefix}&#89CFF0Code accepted. Your command has been released."
+confirm_expired: "{prefix}&#89CFF0Your confirmation code has expired."
+resend: "resend a new confirmation code for your pending action"
+
+# Webhook / email body — plain text only.
+confirm_notify_plain: |
+  **LockDown confirmation required**
+  Player %player% wants to run a potentially dangerous command:
+  `%command%`
+  (Plugin: %plugin%)
+  Relay this code to them OUT OF GAME (never in-game): `%code%`
+  Expires in %time%.
+
+# --- Global command lockdown --------------------------------------------
+lockdown_engaged: "{prefix}&#89CFF0Global command lockdown engaged by %player%. Commands are blocked; movement is unaffected."
+lockdown_released: "{prefix}&#89CFF0Global command lockdown released by %player%."
+lockdown_already: "{prefix}&#89CFF0The server is already in command lockdown."
+lockdown_not_active: "{prefix}&#89CFF0The server is not in command lockdown."
+lockdown_block: "{prefix}&#4682B4The server is in command lockdown. You cannot run commands right now."
+lockdown_code_sent: "{prefix}&#89CFF0Lockdown code sent to guardians. Engage with &#4682B4/lockdown confirm <code>&#89CFF0."
+
+lockdown_notify_engage_plain: |
+  **LockDown — global lockdown requested**
+  %player% requested a global command lockdown.
+  To engage it, relay this code OUT OF GAME: `%code%`
+
+lockdown_notify_release_plain: |
+  **LockDown — lockdown release requested**
+  %player% requested to release the global lockdown.
+  To confirm, relay this code OUT OF GAME: `%code%`
+
+# --- Alerts -------------------------------------------------------------
+alert_plain: |
+  **LockDown alert**
+  Player %player% ran a watched command: `%command%`
+  Plugin: %plugin% | Rule: %rule% | Authorized: %authorized%
+
+alert_player: "{prefix}&#89CFF0%player% &7ran a watched command: &f%command% &7(rule &f%rule%&7)"
+
+# --- GUI ----------------------------------------------------------------
+gui_title_main: "&#89CFF0LockDown &7Control"
+gui_title_logs: "&7LockDown &8» &#89CFF0Recent Logs"
+gui_title_rules: "&7LockDown &8» &#89CFF0Rules"
+gui_title_status: "&7LockDown &8» &#89CFF0Status"
+
+gui_logs_item: "&#4682B4View Logs"
+gui_logs_lore:
+  - "&7Recent command interceptions."
+
+gui_rules_item: "&#89CFF0View Rules"
+gui_rules_lore:
+  - "&7Enabled and configured rules."
+
+gui_status_item: "&#4682B4Status"
+gui_status_lore:
+  - "&7Plugin state and toggles."
+
+gui_close_item: "&#4682B4Close"
+gui_next_item: "&#89CFF0Next »"
+gui_prev_item: "&#89CFF0« Previous"
+gui_back_item: "&#89CFF0« Back"
+
+gui_status_line:
+  - "&7Enabled: %enabled%"
+  - "&7Global lockdown: %locked%"
+  - "&7Lockdown mode: %mode%"
+  - "&7Frozen players: %frozen%"
+  - "&7Rules loaded: %rules%"
+  - "&7Discord: %discord%"
+  - "&7Email: %email%"
+
+# --- Unfreeze messages ---
+unfrozen_admin: "{prefix}&aUnfrozen player &f%player%&a successfully."
+unfrozen_player: "{prefix}&aAn administrator has manually unfrozen you."
+not_frozen: "{prefix}&cThat player is not currently frozen."
+
+# --- Help ---------------------------------------------------------------
+help_header: "{prefix}&#89CFF0&lLockDown &7commands:"
+help_line: "&8 &7/lockdown %cmd% &8- &f%desc%"
+help_lines:
+  reload: "reload configs"
+  scan: "scan server commands into commands/*.yml [--force]"
+  gui: "open the control GUI"
+  rules: "list loaded rules"
+  lock: "engage a global command lockdown"
+  unlock: "release the global command lockdown"
+  confirm: "confirm a pending code &7<code>"
+  resend: "resend or refresh your pending confirmation code"
+  auth: "manage your personal Authenticator app (TOTP)"
+  status: "show plugin status"
+  unfreeze: "manually unfreeze a punitively locked player"
+
+# --- Authenticator (TOTP) -----------------------------------------------
+auth_setup_instructions: "{prefix}&#89CFF0Your Authenticator setup key is: &f%secret%\n{prefix}&7Add this manually in Google Authenticator, then run &#4682B4/lockdown auth verify <code>"
+auth_verify_success: "{prefix}&#89CFF0Authenticator linked! You will now use your app for confirmation codes."
+auth_verify_failed: "{prefix}&#4682B4Invalid code. Please ensure your device clock is accurate and try again."
+auth_disabled: "{prefix}&#89CFF0Authenticator disabled. You will now receive codes via Email/Discord."
+confirm_prompt_totp: "{prefix}&#89CFF0Open your Authenticator app and run &#4682B4/lockdown confirm <code>&#89CFF0 within &f%time%&#89CFF0."
+
+confirm_notify_totp_plain: |
+  **LockDown confirmation required**
+  Player %player% wants to run a potentially dangerous command:
+  `%command%`
+  (Plugin: %plugin%)
+  They must enter their personal Google Authenticator (TOTP) code.
+  Expires in %time%.
+
+lockdown_notify_engage_totp_plain: |
+  **LockDown — global lockdown requested**
+  %player% requested a global command lockdown.
+  They must enter their Google Authenticator (TOTP) code to engage it.
+
+lockdown_notify_release_totp_plain: |
+  **LockDown — lockdown release requested**
+  %player% requested to release the global lockdown.
+  They must enter their Google Authenticator (TOTP) code to release it.
+
+# --- Unfreeze Alerts ---
+unfreeze_notify_plain: |
+  **LockDown — unfreeze requested**
+  Player %player% requested to unfreeze target player: `%target%`
+  Relay this code to them OUT OF GAME: `%code%`
+  Expires in %time%.
+
+unfreeze_notify_totp_plain: |
+  **LockDown — unfreeze requested**
+  Player %player% requested to unfreeze target player: `%target%`
+  They must enter their Google Authenticator (TOTP) code to verify the release.
+  Expires in %time%.

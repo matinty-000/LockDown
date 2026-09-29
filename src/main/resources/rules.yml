@@ -1,0 +1,48 @@
+# ============================================================================
+# LockDown — manual rules (Advanced Tokenized Wildcard Guide)
+# ----------------------------------------------------------------------------
+# Write your own manual cross-plugin rules here. This file is never modified
+# or overwritten by running /lockdown scan.
+#
+# WHAT IS THE WILDCARD SYSTEM?
+# To block complex commands safely, LockDown breaks down your rules and the
+# typed command into individual words (tokens). It supports two wildcards:
+#
+#   *   - Matches exactly ONE word/argument.
+#         Example: "lp user * parent" will match "/lp user Notch parent"
+#         but will NOT match "/lp user Notch parent set" (too many words).
+#
+#   **  - Matches ONE OR MORE words remaining (greedy).
+#         Example: "lp user * permission **" will match:
+#         - "/lp user Steve permission set"
+#         - "/lp user Notch permission set that value"
+#         - "/lp user notch permission remove group.admin duration 10m"
+#
+# HOW TO BLOCK SPECIFIC SUB-COMMANDS:
+# If you want to block the exact sequence "/lp user <any> permission <any> that <any>"
+# regardless of what names, nodes, or extra arguments are written, use:
+#   "lp user * permission * that **"
+#
+# Format for rules:
+#   log: true                  Write to logs/lockdown.log
+#   notify: true               Alert the guardian group (Discord + email)
+#   block: true                Cancel the command execution
+#   require_confirmation: true Freeze the executor until a code is entered
+#   freeze: true               Freeze the executor on failure
+# ============================================================================
+
+rules:
+  - id: custom_lp_permission_block
+    enabled: true
+    permission: "luckperms.admin" # <--- Add this node! LockDown will check this node to see if the player is authorized.
+    patterns:
+      - "lp user * permission **"
+      - "luckperms user * permission **"
+    on_authorized:
+      log: true
+      notify: true
+      require_confirmation: true # OP players running this will get a confirmation prompt.
+    on_unauthorized:
+      log: true
+      notify: true
+      block: true

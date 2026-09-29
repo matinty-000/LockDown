@@ -1,0 +1,24 @@
+# Gradle
+.gradle/
+build/
+
+# IDEs
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+
+# Java build output
+out/
+*.class
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Local server/runtime files
+run/
+server/
+logs/
